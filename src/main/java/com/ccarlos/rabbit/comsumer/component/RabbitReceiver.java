@@ -28,8 +28,8 @@ public class RabbitReceiver {
     @RabbitHandler
     public void onMessage(Message message, Channel channel) throws Exception {
         // 1. 收到消息以后进行业务端消费处理
-        System.out.println("------------------------");
-        System.out.println("消费消息:" + message.getPayload());
+        System.err.println("------------------------");
+        System.err.println("消费消息:" + message.getPayload());
 
         // 2. 处理成功之后 获取deliverTag 并进行手工的ACK操作
         // spring.rabbitmq.listener.simple.acknowledge-mode=manual
