@@ -18,24 +18,23 @@ public class RabbitReceiver {
      * @return: void
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "queue-7", durable = "true"),
-            exchange = @Exchange(name = "exchange-7",
+            value = @Queue(value = "queue-1", durable = "true"),
+            exchange = @Exchange(name = "exchange-1",
                     durable = "true",
                     type = "topic",
                     ignoreDeclarationExceptions = "true"),
             key = "springboot.*"
-    )
-
-    )
+    ))
     @RabbitHandler
     public void onMessage(Message message, Channel channel) throws Exception {
         // 1. 收到消息以后进行业务端消费处理
         System.out.println("------------------------");
-        System.out.println("消费消息:"+message.getPayload());
+        System.out.println("消费消息:" + message.getPayload());
 
         // 2. 处理成功之后 获取deliverTag 并进行手工的ACK操作
-        Long deliverTag=(Long)message.getHeaders().get(AmqpHeaders.DELIVERY_TAG);
+        // spring.rabbitmq.listener.simple.acknowledge-mode=manual
+        Long deliverTag = (Long) message.getHeaders().get(AmqpHeaders.DELIVERY_TAG);
 
-        channel.basicAck(deliverTag,false);
+        channel.basicAck(deliverTag, false);
     }
 }
